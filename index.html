@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Personal Website</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f7f7f7;
+      color: #333;
+    }
+    header, section {
+      margin-bottom: 30px;
+    }
+    img.profile {
+      height: 200px;
+      border-radius: 50%;
+    }
+    .gallery img {
+      height: 150px;
+      margin: 10px;
+      border-radius: 10px;
+    }
+    h1, h2 {
+      color: #005f99;
+    }
+    a {
+      color: #0073e6;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Hello, I'm Aayush Khatanhar</h1>
+    <img src="profile.jpg" alt="My Profile Picture" class="profile">
+  </header>
+
+  <section>
+    <h2>About Me</h2>
+    <p>
+      I was born in Morristown, NJ, in the USA and raised in the nearby town of Parsippany. However I have lived in Pune since I was 6 years old. I am
+      currently pursuing a btech in CSE at IIIT Hyderabad. I enjoy working on technology projects and data
+      analytics. Outside of academics, I've always been interested in sports, particularly football, having
+      played it since I was 3 and playing the u14 nationals in 2018.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pictures from Parsippany</h2>
+    <div class="gallery">
+      <img src="Parsippany1.jpg" alt="Parsippany Picture 1">
+      <img src="Parsippany2.jpg" alt="Parsippany Picture 2">
+    </div>
+  </section>
+  
+  <section>
+    <h2>Pictures from Pune</h2>
+    <div class="gallery">
+      <img src="pune1.jpeg" alt="Pune Picture 1">
+      <img src="pune2.jpg" alt="Pune Picture 2">
+    </div>
+  </section>
+  
+  <section>
+    <h2>Education Background</h2>
+    <ul>
+      <li><strong>VIBGYOR High</strong> – 12 years</li>
+      <li><strong>IIIT Hyderabad</strong> – 1 year</li>
+    </ul>
+    <p>Achievements:</p>
+    <ul>
+      <li>International rank 1 in IMO 2015</li>
+      <li>Dean's List Award for Academic Excellence</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Technical Skills</h2>
+    <ul>
+      <li><strong>Advanced:</strong> C, Python</li>
+      <li><strong>Intermediate:</strong> JavaScript, Arduino, Git, HTML/CSS</li>
+      <li><strong>Beginner:</strong> Pygame, Node.js</li>
+    </ul>
+  </section>
+  <section>
+    <h2>My Resume</h2>
+    <p>You can download my CV here: <a href="cv.pdf" target="_blank">Download CV (PDF)</a></p>
+  </section>
+ <section>
+    <h2>Text Analyzer</h2>
+    <textarea id="bigText" rows="20" cols="100" placeholder="Paste your 10,000+ word text here..."></textarea><br><br>
+    <button onclick="analyzeText()">Analyze</button>
+
+    <h3>Text Statistics:</h3>
+    <div id="output"></div>
+  </section>
+<script>
+  function analyzeText() {
+    const text = document.getElementById("bigText").value;
+
+    let letters = (text.match(/[a-zA-Z]/g) || []).length;
+    let words = (text.match(/\b\w+\b/g) || []).length;
+    let spaces = (text.match(/ /g) || []).length;
+    let newlines = (text.match(/\n/g) || []).length;
+    let specialSymbols = (text.match(/[!@#$%^&*()_+{}\[\]:;"'<>,.?\/\\|`~=-]/g) || []).length;
+
+    const tokens = text.toLowerCase().match(/\b\w+\b/g) || [];
+
+    const pronouns = ["i", "you", "he", "she", "it", "we", "they", "me", "him", "her", "us", "them"];
+    const prepositions = ["in", "on", "at", "by", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "of", "off", "over", "under"];
+    const articles = ["a", "an"];
+
+    function countTokens(tokenArray, label) {
+      let countMap = {};
+      tokenArray.forEach(word => {
+        if (label.includes(word)) {
+          countMap[word] = (countMap[word] || 0) + 1;
+        }
+      });
+      return countMap;
+    }
+
+    const pronounCounts = countTokens(tokens, pronouns);
+    const prepositionCounts = countTokens(tokens, prepositions);
+    const articleCounts = countTokens(tokens, articles);
+
+    const formatMap = (obj) => Object.entries(obj).map(([k, v]) => `${k}: ${v}`).join(", ");
+
+    document.getElementById("output").innerHTML = `
+      <p><strong>Letters:</strong> ${letters}</p>
+      <p><strong>Words:</strong> ${words}</p>
+      <p><strong>Spaces:</strong> ${spaces}</p>
+      <p><strong>Newlines:</strong> ${newlines}</p>
+      <p><strong>Special Symbols:</strong> ${specialSymbols}</p>
+
+      <p><strong>Pronouns:</strong> ${formatMap(pronounCounts)}</p>
+      <p><strong>Prepositions:</strong> ${formatMap(prepositionCounts)}</p>
+      <p><strong>Indefinite Articles:</strong> ${formatMap(articleCounts)}</p>
+    `;
+  }
+</script>
+<script>
+  // Utility function to identify element type
+  function getElementType(element) {
+    const tag = element.tagName.toLowerCase();
+    const type = element.getAttribute('type');
+
+    if (tag === 'img') return 'image';
+    if (tag === 'select') return 'drop-down';
+    if (tag === 'input' && type === 'text') return 'text input';
+    if (tag === 'a') return 'link';
+    if (tag === 'button') return 'button';
+    if (tag === 'p' || tag === 'span' || tag === 'div') return 'text';
+    return tag;
+  }
+
+  // Capture and log click events
+  document.addEventListener('click', function (event) {
+    const element = event.target;
+    const timestamp = new Date().toISOString();
+    const type = 'click';
+    const objectType = getElementType(element);
+
+    console.log(`${timestamp}, ${type}, ${objectType}`);
+  });
+
+  // Capture and log page view events
+  window.addEventListener('load', function () {
+    const timestamp = new Date().toISOString();
+    const type = 'view';
+    const objectType = 'page';
+    console.log(`${timestamp}, ${type}, ${objectType}`);
+  });
+</script>
+</body>
+</html>
